@@ -1,0 +1,3 @@
+Executed SQL Statement : insert into `acps`.`laps` (`lapn`) values ('1') 
+Error Number : 1364 
+Error Message: Field 'trackn' doesn't have a default value 
