@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.logging.Level;
 import static java.util.logging.Level.parse;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import net.proteanit.sql.DbUtils;
 
@@ -36,6 +38,7 @@ public class Parking extends javax.swing.JFrame {
      * Creates new form Parking
      */
     public Parking() {
+        super("Automated Car Parking Enterprise Application");
         initComponents();
         getTrackNo();
         DisplayTable();
@@ -372,7 +375,7 @@ public class Parking extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton3.setText("Release");
+        jButton3.setText("Parked out");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -396,14 +399,10 @@ public class Parking extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jTextField7.setEditable(false);
         jTextField7.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTextField7.setText("Searchh By Name");
 
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField6KeyReleased(evt);
@@ -434,6 +433,8 @@ public class Parking extends javax.swing.JFrame {
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 255)), "Car's Parked", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 255))); // NOI18N
+
+        jTextField8.setEditable(false);
 
         jButton4.setText("Count");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -497,9 +498,7 @@ public class Parking extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -625,11 +624,14 @@ public class Parking extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        MessageFormat header=new MessageFormat("Report print");
+        MessageFormat footer=new MessageFormat("Authority Signature");
+        try{
+            t1.print(JTable.PrintMode.NORMAL,header,footer);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,e);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // data of park table and lap table
@@ -659,6 +661,8 @@ public class Parking extends javax.swing.JFrame {
             pst.executeUpdate();
             updateData();
             DisplayTable();
+            clear();
+            getTrackNo();
             
             JOptionPane.showMessageDialog(null, "car parked.");
          
@@ -810,26 +814,29 @@ public class Parking extends javax.swing.JFrame {
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
-        long diff = d2.getTime()-d1.getTime();
-        long hours = diff/(60*60*1000);
-        long days = hours/24;        
-        String aw = Long.toString(days);
-        
-        int a1 = Integer.parseInt(aw);
-        int tot = a1*20;        
-        String at = Integer.toString(tot);
-        
+                
         try{
+            long diff = d2.getTime()-d1.getTime();
+            long hours = diff/(60*60*1000);
+            long days = hours/24;        
+            String aw = Long.toString(days);
+        
+            int a1 = Integer.parseInt(aw);
+            int tot = a1*20;        
+            String at = Integer.toString(tot);
             String rcc=jTextField1.getText();
-                String sql ="update released set totalday='"+aw+"',pay='"+at+"' where rc='"+rcc+"' ";
-                Class.forName("com.sql.jdbc.Driver");
-                conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/acps","root","root");
-                pst=conn.prepareStatement(sql);
-                pst.executeUpdate();
+            String sql ="update released set totalday='"+aw+"',pay='"+at+"' where rc='"+rcc+"' ";
+            Class.forName("com.mysql.jdbc.Driver");
+            conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/acps","root","root");
+            pst=conn.prepareStatement(sql);
+            pst.executeUpdate();
+            System.out.print("hi");
+            
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
     }
+    
     private void t1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t1MouseClicked
         // TODO add your handling code here:
         int row = t1.getSelectedRow();
@@ -921,7 +928,8 @@ public class Parking extends javax.swing.JFrame {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/acps","root","root");
-            String sql = "select count(rc) form parked";
+            String sql = "select count(rc) from parked";
+            System.out.print("hi");
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             if(rs.next()){
