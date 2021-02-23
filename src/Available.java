@@ -180,6 +180,7 @@ public class Available extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void getData1(){
+    	String temp = "HELL YEAH";
         String str="AVAIL";
         try{
             String sql="select count(status) from laps where status='"+str+"'";
