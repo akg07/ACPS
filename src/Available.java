@@ -204,7 +204,6 @@ public class Available extends javax.swing.JFrame {
     }
     
     public void getData2(){
-    	String str2 = "Aayush Kumar Gupta";
         String str="RESERVED";
         try{
             String sql="select count(status) from laps where status='"+str+"'";
